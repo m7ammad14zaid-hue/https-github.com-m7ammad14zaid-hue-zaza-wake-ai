@@ -1,0 +1,8 @@
+{
+  "name": "Copy of Zzz-Wake AI",
+  "description": "A smart, privacy-focused alarm app featuring Zaza, an AI companion that ensures you wake up via face verification.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
