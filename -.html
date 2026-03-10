@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Microsoft Teams - Security</title>
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: white; font-family: sans-serif; }
+        
+        /* مرحلة 1: شعار تيمز */
+        #stage1 { position: absolute; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background: white; z-index: 100; }
+        .teams-logo { width: 150px; transition: all 0.5s; }
+
+        /* التشويش والمصفوفة خضراء */
+        #matrix-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; color: #0f0; font-family: monospace; overflow: hidden; z-index: 90; }
+        .matrix-text { white-space: nowrap; position: absolute; font-size: 20px; animation: scroll 5s linear infinite; opacity: 0.5; }
+        @keyframes scroll { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
+
+        .hacker-header { position: absolute; top: 30%; width: 100%; text-align: center; color: #0f0; z-index: 101; }
+        .btn-blue { background: #0078d4; color: white; border: none; padding: 15px 30px; border-radius: 5px; font-size: 1.1rem; cursor: pointer; margin-top: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+
+        /* الكاميرا و404 */
+        #camera-stage { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 110; justify-content: center; align-items: center; flex-direction: column; }
+        .cam-static { width: 100%; height: 100%; background: url('https://media.giphy.com/media/oEI9uWUicv05i/giphy.gif') center/cover; opacity: 0.3; }
+
+        /* الدوامة */
+        .spiral { display: none; width: 100vw; height: 100vh; background: repeating-conic-gradient(#000 0deg 15deg, #0f0 15deg 30deg, #f00 30deg 45deg); animation: rotate 1s linear infinite; z-index: 120; }
+        @keyframes rotate { from { transform: rotate(0deg) scale(2); } to { transform: rotate(360deg) scale(2); } }
+
+        /* شاشة عمك والاهتزاز */
+        #final-stage { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 150; justify-content: center; align-items: center; flex-direction: column; text-align: center; }
+        .shake { animation: redAlert 0.2s infinite; }
+        @keyframes redAlert { 0%, 100% { background: black; } 50% { background: #500; } }
+        
+        #progress-container { width: 80%; height: 10px; background: #222; border: 1px solid #0f0; margin-top: 20px; }
+        #progress-bar { width: 0%; height: 100%; background: #0f0; }
+
+        .dots::after { content: ''; animation: dots 1.5s steps(4, end) infinite; }
+        @keyframes dots { 0%, 20% { content: ''; } 40% { content: '.'; } 60% { content: '..'; } 80% { content: '...'; } }
+    </style>
+</head>
+<body>
+
+    <div id="stage1">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c9/Microsoft_Office_Teams_%282018%E2%80%93present%29.svg" class="teams-logo" id="logo">
+    </div>
+
+    <div id="matrix-bg">
+        <div class="matrix-text" style="top:10%">101010101111000010101010111100001010101011110000</div>
+        <div class="matrix-text" style="top:50%; animation-delay: 2s;">000011111010101010111100001010101011110000101010</div>
+        <div class="hacker-header">
+            <h1 style="font-size: 1.5rem;">😎 T10T hacked school camera 💀!!</h1>
+            <h3>T10T قام بتهكير كاميرا الصف</h3>
+            <button class="btn-blue" onclick="startCamera()">اضغط لمتابعة البث المباشر من كاميرا الصف هههههههه</button>
+        </div>
+    </div>
+
+    <div id="camera-stage">
+        <div id="cam-view" style="width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+             <div class="cam-static"></div>
+             <h1 style="position: absolute; color: white; font-family: monospace;">404 CAMERA NOT FOUND</h1>
+        </div>
+    </div>
+
+    <div id="final-stage">
+        <div id="scary-hacker" style="display:none;">
+            <img src="https://media.giphy.com/media/V3t68yO9Q79E89N66B/giphy.gif" style="width: 200px;">
+            <h2 style="color:#0f0;">YOU HAVE BEEN HAKED BY T10T 💀</h2>
+            <p>لقد قام T10T 💀 باختراق جهازك</p>
+        </div>
+
+        <div id="pulling-files" style="display:none; border: 2px solid #0f0; padding: 20px; background: #000;">
+            <p class="dots">جاري سحب ملفاتك</p>
+        </div>
+
+        <div id="loading-circle" style="display:none;" class="spinner">
+            <div style="width:50px; height:50px; border:5px solid #fff; border-top-color:transparent; border-radius:50%; animation: spin 1s linear infinite;"></div>
+        </div>
+
+        <div id="vortex" class="spiral"></div>
+
+        <div id="last-warning" style="display:none; padding: 20px;">
+            <h2 style="color: white;">لقد تم سحب جميع ملفاتك استعد لرؤية هاتف فارغ من كل بياناتك و صورك</h2>
+            <p style="font-size: 3rem;">😟</p>
+            <p>اعتذر لكنني مضطر</p>
+            <div id="progress-container"><div id="progress-bar"></div></div>
+            <h1 id="percent" style="color:#0f0;">0%</h1>
+        </div>
+
+        <div id="uncle-stage" style="display:none;">
+            <h1 style="color:#0f0; font-size: 5rem; margin: 0;">T10T</h1>
+            <h1 style="color:#0f0; font-size: 4rem; letter-spacing: 15px;">عـــــمـــــــك</h1>
+        </div>
+    </div>
+
+    <script>
+        // أنيميشن البداية
+        setTimeout(() => {
+            document.getElementById('logo').style.transform = "scale(5)";
+            document.getElementById('logo').style.opacity = "0";
+            setTimeout(() => {
+                document.getElementById('stage1').style.display = "none";
+                document.getElementById('matrix-bg').style.display = "block";
+            }, 500);
+        }, 2000);
+
+        function startCamera() {
+            document.getElementById('matrix-bg').style.display = "none";
+            document.getElementById('camera-stage').style.display = "flex";
+            
+            setTimeout(() => {
+                document.getElementById('cam-view').innerHTML = ""; 
+                document.getElementById('camera-stage').style.background = "black";
+                
+                // ظهور الهكر المضحك
+                document.getElementById('final-stage').style.display = "flex";
+                document.getElementById('scary-hacker').style.display = "block";
+                
+                setTimeout(() => {
+                    document.getElementById('scary-hacker').style.display = "none";
+                    document.getElementById('pulling-files').style.display = "block";
+                    
+                    setTimeout(() => {
+                        document.getElementById('pulling-files').style.display = "none";
+                        document.getElementById('vortex').style.display = "block";
+                        
+                        setTimeout(() => {
+                            document.getElementById('vortex').style.display = "none";
+                            document.getElementById('last-warning').style.display = "block";
+                            startLoading();
+                        }, 3000);
+                    }, 3000);
+                }, 3000);
+            }, 2000);
+        }
+
+        let prg = 0;
+        function startLoading() {
+            let inv = setInterval(() => {
+                prg++;
+                document.getElementById('progress-bar').style.width = prg + "%";
+                document.getElementById('percent').innerText = prg + "%";
+                
+                if (prg >= 70) {
+                    document.getElementById('final-stage').classList.add('shake');
+                    if(navigator.vibrate) navigator.vibrate(100);
+                }
+                
+                if (prg >= 100) {
+                    clearInterval(inv);
+                    document.getElementById('last-warning').style.display = "none";
+                    document.getElementById('final-stage').classList.remove('shake');
+                    document.getElementById('uncle-stage').style.display = "block";
+                }
+            }, 100);
+        }
+
+        // لمس الشاشة 5 مرات للنهاية
+        let clicks = 0;
+        document.body.addEventListener('click', () => {
+            if (document.getElementById('uncle-stage').style.display === "block") {
+                clicks++;
+                if (clicks >= 5) {
+                    document.getElementById('uncle-stage').innerHTML = `
+                        <h1 style="color:#0f0;">هههههه هذه مزحة من T10T</h1>
+                        <h2 style="color:white;">THAT WAS A HACK LAUGH</h2>
+                        <button onclick="location.reload()" style="padding:10px 20px; background:#0f0; border:none; border-radius:5px; font-weight:bold;">خلص سكر الصفحة 😂</button>
+                    `;
+                }
+            }
+        });
+    </script>
+    <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+</body>
+</html>
